@@ -18,13 +18,45 @@ app.use(express.json());
 
 //import routes
 import authRoutes from "./routes/auth.js"
+import productRoutes from './routes/products.js';
+
 
 //use routes
 app.use("/api/auth", authRoutes);
+app.use('/api/products', productRoutes);
 
+//documentation for endpoints
 app.get("/", (req, res) => {
-  res.send("Hello Technigo!");
+  res.json({
+    message: "manomano API",
+    endpoints: [
+      {
+        path: "/api/auth/register",
+        method: "POST",
+        description: "Register a new user",
+        body: { name: "string", email: "string", password: "string" }
+      },
+      {
+        path: "/api/auth/login",
+        method: "POST",
+        description: "Log in (returns accessToken)",
+        body: { email: "string", password: "string" }
+      },
+      {
+        path: "/api/products",
+        method: "GET",
+        description: "Get all products"
+      },
+      {
+        path: "/api/products",
+        method: "POST",
+        description: "Create a new product",
+        body: { title: "string", image: "string", category: "string", forSale: "boolean", price: "number", creator: "userId" }
+      }
+    ]
+  });
 });
+
 
 // Start the server
 app.listen(port, () => {
