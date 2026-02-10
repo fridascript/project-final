@@ -1,8 +1,8 @@
 # Final Project
 
-Replace this readme with your own information about your project.
+As my final project I decided to combine my two current hyper fixations: building websites and crafts (in my case ceramics)
 
-Start by briefly describing the assignment in a sentence or two. Keep it short and to the point.
+This website helps hobby artists share their work and reach potential buyers by showcasing their hand crafted items in an online gallery with an interest-based system. Instead of public transactions, users can express interest and connect directly with the artist to complete purchases privately. The platform offers an alternative, more personal space for all hobby artists out their to show and sell their work.
 
 ## The problem
 

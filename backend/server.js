@@ -1,8 +1,12 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/final-project";
+
+// MongoDB connection not connected yet!
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/manomano";
 mongoose.connect(mongoUrl);
 mongoose.Promise = Promise;
 
@@ -11,6 +15,12 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+//import routes
+import authRoutes from "./routes/auth.js"
+
+//use routes
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello Technigo!");
