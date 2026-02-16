@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Navbar } from "../components/Navbar";
 import { FilterBar } from '../components/FilterBar';
 import { ProductCard } from '../components/ProductCard';
+import { fetchProducts } from "../tools/api";
 
 //styled components
 const Container = styled.div`
@@ -26,24 +28,26 @@ const Grid = styled.div`
 
 
 export const Home = () => {
+   const [products, setProducts] = useState([]);
+
+   useEffect(() => {
+    const getProducts = async () => {
+      const data = await fetchProducts();
+      setProducts(data);
+    };
+    
+    getProducts();
+  }, []);
+
   return (
     <Container>
       <Navbar/>
       <FilterBar />
       <GridContainer>
       <Grid>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
-      <ProductCard/>
+      {products.map((product) => (
+    <ProductCard key={product._id} product={product} />
+  ))}
       </Grid>
       </GridContainer>
     </Container>

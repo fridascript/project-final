@@ -19,8 +19,10 @@ cursor: pointer;
 
 const ImagePlaceholder = styled.div`
   width: 100%;
-  height: 200px;
+  height: 250px;
   background-color: #c4c1c1;
+  background-position: center;
+  background-repeat: no-repeat;
   border-radius: 4px;
   margin-bottom: 12px;
 `;
@@ -48,13 +50,13 @@ const Price = styled.p`
 
 
 
-export const ProductCard = () => {
+export const ProductCard = ({ product }) => {
   return (
-    <Card>
-      <ImagePlaceholder />
-      <Title>Product: </Title>
-      <Artist>Artist: </Artist>
-      <Price>xx kr</Price>
-    </Card>
+  <Card>
+  <ImagePlaceholder style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover' }} />
+  <Title>{product.title}</Title>
+  <Artist>By {product.creator?.name || 'Artist'}</Artist>
+  <Price>{product.price} kr</Price>
+  </Card>
   );
 };

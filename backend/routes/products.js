@@ -1,20 +1,22 @@
 import express from "express";
 import Product from "../models/product.js";
+import { parser } from '../config/cloudinary.js';
 
 const router = express.Router();
+
 
 
 // *** routes *** 
 
 // route: create new product post
-
-router.post("/", async (req, res) => {
+router.post("/",parser.single("image"), async (req, res) => {
   try {
-    const { title, image, category, forSale, price, creator} = req.body;
+    const { title, category, forSale, price, creator} = req.body;
+    const imageUrl = req.file.path;
 
     const product = new Product ({
       title,
-      image,
+      image: imageUrl,
       category,
       forSale,
       price,
@@ -41,7 +43,6 @@ router.post("/", async (req, res) => {
 
 
 // route: get all products
-
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find()
