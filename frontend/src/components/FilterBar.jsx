@@ -2,12 +2,21 @@ import styled from 'styled-components';
 
 const FilterContainer = styled.div`
   display: flex;
-  gap: 20px;
-  margin-top: 200px;
-  margin-left: 380px;
-  margin-bottom: 0px;
-  align-items: center;
-`;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px 0;
+  margin-top: 50px;
+  align-items: stretch;
+  border: 1px solid #800020;
+  border-radius: 8px;
+  padding: 20px;
+  
+  
+  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: row;
+    align-items: center;
+  }
+  `;
 
 const FilterLabel = styled.span`
   font-family: ${props => props.theme.fonts.body};
@@ -16,11 +25,16 @@ const FilterLabel = styled.span`
 `;
 
 const Select = styled.select`
-  padding: 8px 15px;
+  padding: 10px 10px;
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: 4px;
   font-family: ${props => props.theme.fonts.body};
   cursor: pointer;
+  width: 100%;
+  
+  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+    width: auto;
+  }
   
   &:focus {
     outline: none;

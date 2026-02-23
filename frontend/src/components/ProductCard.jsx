@@ -1,11 +1,14 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Card = styled.div`
 border: 1px solid black;
 border-radius: 4px;
 padding: 6px;
+width: 100%;
 max-width: 250px;
-display:flex;
+margin: 0 auto;
+display: flex;
 flex-direction: column;
 align-items: left;
 cursor: pointer;
@@ -52,11 +55,13 @@ const Price = styled.p`
 
 export const ProductCard = ({ product }) => {
   return (
+  <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
   <Card>
   <ImagePlaceholder style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover' }} />
   <Title>{product.title}</Title>
   <Artist>By {product.creator?.name || 'Artist'}</Artist>
   <Price>{product.price} kr</Price>
   </Card>
+  </Link>
   );
 };

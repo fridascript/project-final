@@ -12,18 +12,31 @@ const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
 `;
-const GridContainer = styled.div`
-max-width: 1100px;
-margin: 0 auto;
 
+ const GridContainer = styled.div`
+ max-width: 1100px;
+ margin: 0 auto;
 `;
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 10px;
-  row-gap: 30px;
-  margin-top: 80px;
 
+ const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 100px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 10px;
+    row-gap: 30px;
+  }
 `;
 
 

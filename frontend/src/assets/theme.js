@@ -13,9 +13,14 @@ export const theme = {
      body: '"Lexend", sans-serif'
   },
   fontSizes: {
-    small: '12px',
-    medium: '14px',
-    large: '24px',
-    xlarge: '32px'
-  }
+    small: "12px",
+    medium: "14px",
+    large: "24px",
+    xlarge: "32px"
+  },
+  breakpoints: {
+    mobile: "480px",
+    tablet: "768px",
+    desktop: "1024px"
+}
 };

@@ -13,7 +13,7 @@ router.post('/register', async (req, res) =>{
     const {name, email, password } = req.body;
 
 // check if user already exists
-const existingUser = await User.findOne({ email: toLowerCase });
+const existingUser = await User.findOne({ email: email.toLowerCase() });
 if (existingUser) {
   return res.status(400).json({
      success: false,
@@ -44,13 +44,14 @@ res.status(201).json ({
   }
 });
 
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-       message: "Could not create user", 
-       response: error
-      });
-  }
+ } catch (error) {
+  console.log('Register error:', error); 
+  res.status(500).json({
+    success: false,
+    message: "Could not create user", 
+    response: error
+  });
+}
 });
 
 
@@ -87,5 +88,18 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+// identifies who is logged in "hi, username "
+router.get('/me', async (req, res) => {
+  try {
+    const user = await User.findOne({ accessToken: req.headers.authorization });
+    if (!user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    res.status(200).json({ success: true, response: { name: user.name, email: user.email } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
 
 export default router; 

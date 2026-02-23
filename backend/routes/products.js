@@ -45,7 +45,9 @@ router.post("/",parser.single("image"), async (req, res) => {
 // route: get all products
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find()
+     const { userId } = req.query;       
+    const filter = userId ? { creator: userId } : {};  
+    const products = await Product.find(filter)
       .populate('creator', 'name email profileImage')
       .sort({ createdAt: -1 });
     
@@ -58,6 +60,34 @@ router.get('/', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Could not fetch products',
+      response: error
+    });
+  }
+});
+
+// get single product by ID
+
+router.get("/:id", async (req,res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id)
+    .populate("creator", "name email profileImage");
+if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      response: product
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Could not fetch product',
       response: error
     });
   }

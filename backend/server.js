@@ -19,11 +19,13 @@ app.use(express.json());
 //import routes
 import authRoutes from "./routes/auth.js"
 import productRoutes from './routes/products.js';
+import interestRoutes from "./routes/interest.js";
 
 
 //use routes
 app.use("/api/auth", authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/interests', interestRoutes);
 
 //documentation for endpoints
 app.get("/", (req, res) => {
