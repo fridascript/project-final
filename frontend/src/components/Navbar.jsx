@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 
 // styling for component
@@ -149,6 +149,16 @@ const MessagesLink = styled(NavButton)`
   font-weight: bold;
 `;
 
+const Notification = styled.span`
+  background-color: #620505;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 11px;
+  margin-left: 4px;
+  vertical-align: middle;
+`;
+
 const Dropdown = styled.div`
   position: relative;
   
@@ -189,6 +199,21 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isLoggedIn = !!localStorage.getItem('accessToken');
   const navigate = useNavigate ();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+  if (!isLoggedIn) return;
+  
+  const fetchUnread = async () => {
+    const userId = localStorage.getItem('userId');
+    const response = await fetch(`http://localhost:5000/api/interests/unread-count/${userId}`);
+    const data = await response.json();
+     console.log('Unread data:', data);
+    if (data.success) setUnreadCount(data.count);
+  };
+
+  fetchUnread();
+}, [isLoggedIn]);
 
   return (
     <>
@@ -204,12 +229,19 @@ export const Navbar = () => {
         <span></span>
       </HamburgerButton>
 
-       {!isLoggedIn && <SearchBar type="text" placeholder="Search..." />}
+       {!isLoggedIn && 
+       <SearchBar 
+       type="text" 
+       placeholder="Search..." 
+       onChange={(e) => navigate(`/?search=${e.target.value}`)}
+       />}
 
     <NavLinks>
   {isLoggedIn ? (
     <>
-      <MessagesLink onClick={() => navigate('/messages')}>Messages</MessagesLink>
+      <MessagesLink onClick={() => navigate('/messages')}> 
+        Messages {unreadCount > 0 && <Notification>{unreadCount}</Notification>}
+      </MessagesLink>
       <Dropdown>
         <Username> menu ▾</Username>
         <DropdownMenu>

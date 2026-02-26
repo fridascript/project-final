@@ -15,6 +15,13 @@ const Title = styled.h1`
   text-align: center;
 `;
 
+const Subtitle = styled.p`
+font-family: ${props => props.theme.fonts.text};
+font-size: ${props => props.theme.fontSizes.medium};
+margin-bottom: 30px;
+text-align: center;
+`;
+
 const Form = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,11 +92,14 @@ export const Login = () => {
       <Navbar />
       <Container>
         <Title>Login</Title>
+        <Subtitle> Log in to post your own hand crafted items.</Subtitle>
         <Form>
           <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
           <Input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
           {error && <ErrorMessage>{error}</ErrorMessage>}
           <Button onClick={handleLogin}>Login</Button>
+          <Subtitle>Psst, not needed to log in if you just want to browse!
+        </Subtitle>
         </Form>
       </Container>
     </>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useLocation } from 'react-router-dom';
 import { Navbar } from "../components/Navbar";
 import { FilterBar } from '../components/FilterBar';
 import { ProductCard } from '../components/ProductCard';
@@ -42,6 +43,8 @@ const Container = styled.div`
 
 export const Home = () => {
    const [products, setProducts] = useState([]);
+   const location = useLocation();
+   const searchTerm = new URLSearchParams(location.search).get('search') || '';
 
    useEffect(() => {
     const getProducts = async () => {
@@ -52,13 +55,18 @@ export const Home = () => {
     getProducts();
   }, []);
 
+  const filteredProducts = products.filter(product =>
+  product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  product.category.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
   return (
     <Container>
       <Navbar/>
       <FilterBar />
       <GridContainer>
       <Grid>
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
     <ProductCard key={product._id} product={product} />
   ))}
       </Grid>
