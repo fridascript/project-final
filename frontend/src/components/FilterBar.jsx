@@ -3,11 +3,11 @@ import styled from 'styled-components';
 const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 15px;
-  margin: 30px 0;
-  margin-top: 50px;
+  margin-top: 150px;
+  margin-bottom: 0px;
   align-items: stretch;
-  border: 1px solid #800020;
   border-radius: 8px;
   padding: 20px;
   

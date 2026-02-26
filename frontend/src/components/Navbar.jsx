@@ -44,6 +44,7 @@ const HamburgerButton = styled.button`
     height: 3px;
     background-color: ${props => props.theme.colors.text};
     transition: all 0.3s ease;
+
   }
 `;
 
@@ -124,9 +125,8 @@ const NavButton = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: ${props => props.theme.colors.accent};
-    color: white;
-    border-color: ${props => props.theme.colors.accent};
+    color: black;
+    border: 1px solid #460202;
   }
 `;
 
@@ -136,6 +136,7 @@ const LogoutButton = styled(NavButton)`
   border-color: ${props => props.theme.colors.accent};
 
    &:hover {
+    border: 1px solid #460202;
     opacity: 0.9;
     transform: translateY(-2px);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
@@ -193,7 +194,7 @@ export const Navbar = () => {
     <>
     <Nav>
       <LogoSection>
-        <Logo>MANOMANO</Logo>
+        <Logo onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>MANOMANO</Logo>
         <Subtitle>Browse through hand crafted items</Subtitle>
       </LogoSection>
        
@@ -214,6 +215,7 @@ export const Navbar = () => {
         <DropdownMenu>
           <DropdownItem onClick={() => navigate('/dashboard')}>My items</DropdownItem>
           <DropdownItem onClick={() => navigate('/post-item')}>Post new item</DropdownItem>
+          <DropdownItem onClick={() => navigate(`/gallery/${localStorage.getItem('userId')}`)}>My gallery</DropdownItem>
           <DropdownItem onClick={() => navigate('/account')}>My account</DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -235,12 +237,18 @@ export const Navbar = () => {
 <MobileMenu isOpen={isMenuOpen}>
   <CloseButton onClick={() => setIsMenuOpen(false)}>X</CloseButton>
   {isLoggedIn ? (
-    <LogoutButton onClick={() => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('userId');
-      navigate('/');
-      setIsMenuOpen(false);
-    }}>Log out</LogoutButton>
+    <>
+      <NavButton onClick={() => { navigate('/messages'); setIsMenuOpen(false); }}>Messages</NavButton>
+      <NavButton onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>My items</NavButton>
+      <NavButton onClick={() => { navigate('/post-item'); setIsMenuOpen(false); }}>Post item</NavButton>
+      <NavButton onClick={() => { navigate('/account'); setIsMenuOpen(false); }}>My account</NavButton>
+      <LogoutButton onClick={() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userId');
+        navigate('/');
+        setIsMenuOpen(false);
+      }}>Log out</LogoutButton>
+    </>
   ) : (
     <>
       <NavButton onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>Log in</NavButton>

@@ -21,8 +21,8 @@ const Container = styled.div`
  const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-top: 100px;
+  gap: 40px;
+  margin-top: 50px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;

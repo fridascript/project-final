@@ -7,7 +7,6 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-
 `;
 
 const Title = styled.h1`
@@ -17,20 +16,23 @@ const Title = styled.h1`
 
 const Section = styled.div`
   margin-bottom: 50px;
-  border: 1px solid red;
   border-radius: 8px;
   padding: 20px;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 80%;
 `;
 
 const SectionGrid = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  width: 100%;
+  box-sizing: border-box;
   
   @media (min-width: ${props => props.theme.breakpoints.desktop}) {
     flex-direction: row;
     align-items: flex-start;
-    margin-top: 50px;
   }
 `;
 
@@ -54,6 +56,13 @@ const ProductItem = styled.div`
   padding: 12px;
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
+
+
+&:hover {
+    border-color: #800020;
+  }
+
+  
 `;
 
 const ProductImage = styled.img`
@@ -61,10 +70,28 @@ const ProductImage = styled.img`
   height: 60px;
   object-fit: cover;
   border-radius: 4px;
+
+    @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+    width: 120px;
+    height: 120px;
+  }
 `;
 
 const ProductInfo = styled.div`
   flex: 1;
+`;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0px 0px;
+  cursor: pointer;
+  
+  
+&:hover {
+  transform: translateY(2px);
+}
 `;
 
 const ProductTitle = styled.p`
@@ -80,6 +107,19 @@ const ProductPrice = styled.p`
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+
+const handleDelete = async (productId) => {
+  if (!window.confirm('Are you sure you want to delete this item?')) return;
+  
+  await fetch(`http://localhost:5000/api/products/${productId}`, {
+    method: 'DELETE'
+  });
+  
+  setProducts(products.filter(p => p._id !== productId));
+};
+
+
+
   const userId = localStorage.getItem('userId');
   const [username, setUsername] = useState('');
 
@@ -100,7 +140,6 @@ const fetchUser = async () => {
     headers: { Authorization: localStorage.getItem('accessToken') }
   });
   const data = await response.json();
-  console.log('User data:', data);
   if (data.success) setUsername(data.response.name);
 };
 
@@ -113,11 +152,11 @@ fetchUser();
     <>
       <Navbar />
       <Container>
-        <Title> Hi, {username}! </Title>
+        <Title> Hi {username}! </Title>
 
 <SectionGrid>
         <Section>
-          <SectionTitle>My items</SectionTitle>
+          <SectionTitle>Posted items</SectionTitle>
           <ProductList>
             {products.length === 0 && <p>You have no items yet.</p>}
             {products.map(product => (
@@ -127,7 +166,7 @@ fetchUser();
                   <ProductTitle>{product.title}</ProductTitle>
                   <ProductPrice>{product.price} kr</ProductPrice>
                 </ProductInfo>
-              </ProductItem>
+<DeleteButton onClick={() => handleDelete(product._id)} aria-label="Delete item">🗑️</DeleteButton>              </ProductItem>
             ))}
           </ProductList>
         </Section>

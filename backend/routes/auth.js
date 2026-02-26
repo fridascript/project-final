@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt"; 
 import User from "../models/user.js"
+import { parser } from '../config/cloudinary.js';
 
 // handles register user and log in user
 const router = express.Router();
@@ -94,11 +95,41 @@ router.get('/me', async (req, res) => {
   try {
     const user = await User.findOne({ accessToken: req.headers.authorization });
     if (!user) return res.status(401).json({ success: false, message: 'Unauthorized' });
-    res.status(200).json({ success: true, response: { name: user.name, email: user.email } });
+    res.status(200).json({ success: true, response: { name: user.name, email: user.email, bio: user.bio, profileImage: user.profileImage, headerImage: user.headerImage } });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+
+router.put('/me', parser.fields([{ name: 'profileImage', maxCount: 1 }, { name: 'headerImage', maxCount: 1 }]), async (req, res) => {
+  try {
+    const user = await User.findOne({ accessToken: req.headers.authorization });
+    if (!user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+    const { name, bio } = req.body;
+    if (name) user.name = name;
+    if (bio) user.bio = bio;
+    if (req.file) user.profileImage = req.file.path;
+    if (req.files && req.files.headerImage) user.headerImage = req.files.headerImage[0].path;
+
+
+    await user.save();
+    res.status(200).json({ success: true, response: { name: user.name, bio: user.bio, profileImage: user.profileImage } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select('name bio profileImage headerImage');
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    res.status(200).json({ success: true, response: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 
 
 

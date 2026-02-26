@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
 import { fetchProductById } from '../tools/api';
@@ -134,6 +134,7 @@ const SubmitButton = styled.button`
 
 export const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null); 
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -141,7 +142,9 @@ export const ProductDetail = () => {
    email: '',
    phone: '',
    message: ''
-});
+  })
+  const [submitted, setSubmitted] = useState(false);
+  ;
 
   useEffect(() => {
     const getProduct = async () => {
@@ -168,7 +171,7 @@ export const ProductDetail = () => {
       body: JSON.stringify({ productId: id, ...formData })
     });
     setShowForm(false);
-    alert('Thanks! Your message has been sent to the artist.');
+    setSubmitted(true);
   } catch (error) {
     alert('Oups something went wrong, try again!');
   }
@@ -186,7 +189,13 @@ export const ProductDetail = () => {
       
       <InfoSection>
       <Title>{product.title}</Title>
-      <Category>{product.category}</Category>
+      <Category 
+       onClick={() => navigate(`/gallery/${product.creator._id}`)}
+       style={{ cursor: 'pointer', textDecoration: 'underline' }}
+      >
+  {product.creator.name}
+</Category>
+<Category>{product.category}</Category>
       <Price>{product.price} kr</Price>
 
     {product.forSale && (
@@ -195,13 +204,41 @@ export const ProductDetail = () => {
     <InterestButton onClick={() => setShowForm(!showForm)}>
       {showForm ? 'Hide form' : 'Connect with the artist'}
     </InterestButton>
+    {submitted && (
+  <p style={{ marginTop: '16px', color: '#460202' }}>
+    Your message has been sent to the artist!
+  </p>
+)}
 
     {showForm && (
       <Form>
-        <Input type="text" name="name" placeholder="Your name" value={formData.name} onChange={handleChange} />
-        <Input type="email" name="email" placeholder="Your email" value={formData.email} onChange={handleChange} />
-        <Input type="tel" name="phone" placeholder="Phone number (optional)" value={formData.phone} onChange={handleChange} />
-        <Textarea name="message" placeholder="Your message..." value={formData.message} onChange={handleChange} />
+        <Input 
+        type="text" 
+        name="name" 
+        placeholder="Your name" 
+        value={formData.name} 
+        onChange={handleChange} 
+        />
+        <Input 
+        type="email" 
+        name="email" 
+        placeholder="Your email" 
+        value={formData.email} 
+        onChange={handleChange} 
+        />
+        <Input
+         type="tel" 
+         name="phone" 
+         placeholder="Phone number (optional)" 
+         value={formData.phone} 
+         onChange={handleChange} 
+         />
+        <Textarea 
+        name="message" 
+        placeholder="Your message..." 
+        value={formData.message} 
+        onChange={handleChange} 
+        />
         <SubmitButton onClick={handleSubmit}>Send</SubmitButton>
       </Form>
     )}
