@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from '../zustandstore/useAuthStore.js';
 
-// styling for component
 const MobileMenu = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'isOpen'
 })`
@@ -44,7 +44,6 @@ const HamburgerButton = styled.button`
     height: 3px;
     background-color: ${props => props.theme.colors.text};
     transition: all 0.3s ease;
-
   }
 `;
 
@@ -135,7 +134,7 @@ const LogoutButton = styled(NavButton)`
   color: white;
   border-color: ${props => props.theme.colors.accent};
 
-   &:hover {
+  &:hover {
     border: 1px solid #460202;
     opacity: 0.9;
     transform: translateY(-2px);
@@ -194,26 +193,24 @@ const Username = styled.span`
   cursor: pointer;
 `;
 
-
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isLoggedIn = !!localStorage.getItem('accessToken');
-  const navigate = useNavigate ();
+  const { isLoggedIn, logout } = useAuthStore();
+  const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-  if (!isLoggedIn) return;
-  
-  const fetchUnread = async () => {
-    const userId = localStorage.getItem('userId');
-    const response = await fetch(`http://localhost:5000/api/interests/unread-count/${userId}`);
-    const data = await response.json();
-     console.log('Unread data:', data);
-    if (data.success) setUnreadCount(data.count);
-  };
+    if (!isLoggedIn) return;
+    
+    const fetchUnread = async () => {
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`http://localhost:5000/api/interests/unread-count/${userId}`);
+      const data = await response.json();
+      if (data.success) setUnreadCount(data.count);
+    };
 
-  fetchUnread();
-}, [isLoggedIn]);
+    fetchUnread();
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -229,65 +226,64 @@ export const Navbar = () => {
         <span></span>
       </HamburgerButton>
 
-       {!isLoggedIn && 
-       <SearchBar 
-       type="text" 
-       placeholder="Search..." 
-       onChange={(e) => navigate(`/?search=${e.target.value}`)}
-       />}
+      {!isLoggedIn && 
+        <SearchBar 
+          type="text" 
+          placeholder="Search..." 
+          onChange={(e) => navigate(`/?search=${e.target.value}`)}
+        />
+      }
 
-    <NavLinks>
-  {isLoggedIn ? (
-    <>
-      <MessagesLink onClick={() => navigate('/messages')}> 
-        Messages {unreadCount > 0 && <Notification>{unreadCount}</Notification>}
-      </MessagesLink>
-      <Dropdown>
-        <Username> menu ▾</Username>
-        <DropdownMenu>
-          <DropdownItem onClick={() => navigate('/dashboard')}>My items</DropdownItem>
-          <DropdownItem onClick={() => navigate('/post-item')}>Post new item</DropdownItem>
-          <DropdownItem onClick={() => navigate(`/gallery/${localStorage.getItem('userId')}`)}>My gallery</DropdownItem>
-          <DropdownItem onClick={() => navigate('/account')}>My account</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-      <LogoutButton onClick={() => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userId');
-        navigate('/');
-      }}>Log out</LogoutButton>
-    </>
-  ) : (
-    <>
-      <NavButton onClick={() => navigate('/login')}>Log in</NavButton>
-      <NavButton onClick={() => navigate('/register')}>Sign up</NavButton>
-    </>
-  )}
-</NavLinks>
-</Nav>
+      <NavLinks>
+        {isLoggedIn ? (
+          <>
+            <MessagesLink onClick={() => navigate('/messages')}> 
+              Messages {unreadCount > 0 && <Notification>{unreadCount}</Notification>}
+            </MessagesLink>
+            <Dropdown>
+              <Username>menu ▾</Username>
+              <DropdownMenu>
+                <DropdownItem onClick={() => navigate('/dashboard')}>My items</DropdownItem>
+                <DropdownItem onClick={() => navigate('/post-item')}>Post new item</DropdownItem>
+                <DropdownItem onClick={() => navigate(`/gallery/${localStorage.getItem('userId')}`)}>My gallery</DropdownItem>
+                <DropdownItem onClick={() => navigate('/account')}>My account</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <LogoutButton onClick={() => {
+              logout();
+              navigate('/');
+            }}>Log out</LogoutButton>
+          </>
+        ) : (
+          <>
+            <NavButton onClick={() => navigate('/login')}>Log in</NavButton>
+            <NavButton onClick={() => navigate('/register')}>Sign up</NavButton>
+          </>
+        )}
+      </NavLinks>
+    </Nav>
 
-<MobileMenu isOpen={isMenuOpen}>
-  <CloseButton onClick={() => setIsMenuOpen(false)}>X</CloseButton>
-  {isLoggedIn ? (
-    <>
-      <NavButton onClick={() => { navigate('/messages'); setIsMenuOpen(false); }}>Messages</NavButton>
-      <NavButton onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>My items</NavButton>
-      <NavButton onClick={() => { navigate('/post-item'); setIsMenuOpen(false); }}>Post item</NavButton>
-      <NavButton onClick={() => { navigate('/account'); setIsMenuOpen(false); }}>My account</NavButton>
-      <LogoutButton onClick={() => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('userId');
-        navigate('/');
-        setIsMenuOpen(false);
-      }}>Log out</LogoutButton>
+    <MobileMenu isOpen={isMenuOpen}>
+      <CloseButton onClick={() => setIsMenuOpen(false)}>X</CloseButton>
+      {isLoggedIn ? (
+        <>
+          <NavButton onClick={() => { navigate('/messages'); setIsMenuOpen(false); }}>Messages</NavButton>
+          <NavButton onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>My items</NavButton>
+          <NavButton onClick={() => { navigate('/post-item'); setIsMenuOpen(false); }}>Post item</NavButton>
+          <NavButton onClick={() => { navigate('/account'); setIsMenuOpen(false); }}>My account</NavButton>
+          <LogoutButton onClick={() => {
+            logout();
+            navigate('/');
+            setIsMenuOpen(false);
+          }}>Log out</LogoutButton>
+        </>
+      ) : (
+        <>
+          <NavButton onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>Log in</NavButton>
+          <NavButton onClick={() => { navigate('/register'); setIsMenuOpen(false); }}>Sign up</NavButton>
+        </>
+      )}
+    </MobileMenu>
     </>
-  ) : (
-    <>
-      <NavButton onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>Log in</NavButton>
-      <NavButton onClick={() => { navigate('/register'); setIsMenuOpen(false); }}>Sign up</NavButton>
-    </>
-  )}
-</MobileMenu>
-  </>
   );
 };

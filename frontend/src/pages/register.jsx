@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
+import { useAuthStore } from '../zustandstore/useAuthStore.js';
 
 const Container = styled.div`
   max-width: 400px;
@@ -51,6 +52,7 @@ const ErrorMessage = styled.p`
 
 export const Register = () => {
   const navigate = useNavigate();
+  const { login } = useAuthStore();
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -69,8 +71,7 @@ export const Register = () => {
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('accessToken', data.response.accessToken);
-        localStorage.setItem('userId', data.response.userId);
+        login(data.response.accessToken, data.response.userId);
         navigate('/dashboard');
       } else {
         setError(data.message);

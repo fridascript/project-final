@@ -166,7 +166,8 @@ fetchUser();
                   <ProductTitle>{product.title}</ProductTitle>
                   <ProductPrice>{product.price} kr</ProductPrice>
                 </ProductInfo>
-<DeleteButton onClick={() => handleDelete(product._id)} aria-label="Delete item">🗑️</DeleteButton>              </ProductItem>
+                <DeleteButton onClick={() => navigate(`/edit-item/${product._id}`)} aria-label="Edit item">✏️</DeleteButton>
+                <DeleteButton onClick={() => handleDelete(product._id)} aria-label="Delete item">🗑️</DeleteButton>              </ProductItem>
             ))}
           </ProductList>
         </Section>

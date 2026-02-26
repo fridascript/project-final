@@ -11,12 +11,11 @@ const FilterContainer = styled.div`
   border-radius: 8px;
   padding: 20px;
   
-  
   @media (min-width: ${props => props.theme.breakpoints.tablet}) {
     flex-direction: row;
     align-items: center;
   }
-  `;
+`;
 
 const FilterLabel = styled.span`
   font-family: ${props => props.theme.fonts.body};
@@ -42,34 +41,46 @@ const Select = styled.select`
   }
 `;
 
-export const FilterBar = () => {
+export const FilterBar = ({ products = [], onArtistChange, onCategoryChange, onColorChange }) => {
+  
+  
+  const artists = [...new Map(products
+    .filter(p => p.creator)
+    .map(p => [p.creator._id, p.creator])
+  ).values()];
+
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+  const colors = [...new Set(products.map(p => p.color).filter(Boolean))];
+
   return (
     <FilterContainer>
       <div>
         <FilterLabel>ARTIST</FilterLabel>
-        <Select>
+        <Select onChange={(e) => onArtistChange(e.target.value)}>
           <option value="">All</option>
-          <option value="artist1">Artist 1</option>
-          <option value="artist2">Artist 2</option>
+          {artists.map(artist => (
+            <option key={artist._id} value={artist._id}>{artist.name}</option>
+          ))}
         </Select>
       </div>
       
       <div>
         <FilterLabel>TYPE</FilterLabel>
-        <Select>
+        <Select onChange={(e) => onCategoryChange(e.target.value)}>
           <option value="">All</option>
-          <option value="ceramics">Ceramics</option>
-          <option value="textiles">Textiles</option>
-          <option value="wood">Wood</option>
+          {categories.map(category => (
+            <option key={category} value={category}>{category}</option>
+          ))}
         </Select>
       </div>
       
       <div>
         <FilterLabel>COLOR</FilterLabel>
-        <Select>
+        <Select onChange={(e) => onColorChange(e.target.value)}>
           <option value="">All</option>
-          <option value="blue">Blue</option>
-          <option value="red">Red</option>
+          {colors.map(color => (
+            <option key={color} value={color}>{color}</option>
+          ))}
         </Select>
       </div>
     </FilterContainer>

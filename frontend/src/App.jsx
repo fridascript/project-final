@@ -11,7 +11,9 @@ import { Gallery } from './pages/gallery.jsx';
 import { Dashboard } from './pages/dashboard.jsx';
 import { Messages } from './pages/messages.jsx';
 import { PostItem } from './pages/PostItems.jsx';
+import { EditItem } from './pages/EditItem';
 import { Account } from './pages/account.jsx';
+
 
 
 export const App = () => {
@@ -30,6 +32,7 @@ export const App = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/messages" element={<Messages />} />
       <Route path="/post-item" element={<PostItem />} />
+      <Route path="/edit-item/:id" element={<EditItem />} />
       <Route path="/account" element={<Account />} />
       </Routes>
       </BrowserRouter>

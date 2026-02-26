@@ -45,6 +45,9 @@ export const Home = () => {
    const [products, setProducts] = useState([]);
    const location = useLocation();
    const searchTerm = new URLSearchParams(location.search).get('search') || '';
+   const [selectedArtist, setSelectedArtist] = useState('');
+   const [selectedCategory, setSelectedCategory] = useState('');
+   const [selectedColor, setSelectedColor] = useState('');
 
    useEffect(() => {
     const getProducts = async () => {
@@ -55,15 +58,24 @@ export const Home = () => {
     getProducts();
   }, []);
 
-  const filteredProducts = products.filter(product =>
-  product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  product.category.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  const filteredProducts = products.filter(product => {
+   const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesArtist = !selectedArtist || product.creator._id === selectedArtist;
+  const matchesCategory = !selectedCategory || product.category === selectedCategory;
+  const matchesColor = !selectedColor || product.color === selectedColor;
+  return matchesSearch && matchesArtist && matchesCategory && matchesColor;
+});
 
   return (
     <Container>
       <Navbar/>
-      <FilterBar />
+      <FilterBar 
+      products={products}
+      onArtistChange={setSelectedArtist}
+      onCategoryChange={setSelectedCategory}
+      onColorChange={setSelectedColor}
+      />
       <GridContainer>
       <Grid>
       {filteredProducts.map((product) => (
