@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { API_URL } from '../tools/config';
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from '../zustandstore/useAuthStore.js';
@@ -204,7 +205,7 @@ export const Navbar = () => {
     
     const fetchUnread = async () => {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/api/interests/unread-count/${userId}`);
+      const response = await fetch(`${API_URL}/api/interests/unread-count/${userId}`);
       const data = await response.json();
       if (data.success) setUnreadCount(data.count);
     };

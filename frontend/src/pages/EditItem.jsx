@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -89,7 +90,7 @@ export const EditItem = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`);
+      const response = await fetch(`${API_URL}/api/products/${id}`);
       const data = await response.json();
       if (data.success) {
         const p = data.response;
@@ -121,7 +122,7 @@ export const EditItem = () => {
     data.append('color', formData.color);
     if (image) data.append('image', image);
 
-    const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+    const response = await fetch(`${API_URL}/api/products/${id}`, {
       method: 'PUT',
       body: data
     });

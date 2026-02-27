@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../tools/config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -112,7 +113,7 @@ export const PostItem = () => {
     data.append('color', formData.color);
 
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${API_URL}/api/products`, {
         method: 'POST',
         body: data
       });

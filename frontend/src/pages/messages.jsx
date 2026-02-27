@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -84,7 +85,7 @@ export const Messages = () => {
     }
 
     const fetchInterests = async () => {
-      const response = await fetch(`http://localhost:5000/api/interests/my-interests/${userId}`);
+      const response = await fetch(`${API_URL}/api/interests/my-interests/${userId}`);
       const data = await response.json();
       if (data.success) setInterests(data.response);
     };
@@ -93,12 +94,12 @@ export const Messages = () => {
   }, []);
 
   const handleOpen = async (interest) => {
-    // Toggla öppet/stängt
+    // toggles open/closed
     setOpenId(openId === interest._id ? null : interest._id);
 
-    // Markera som läst om det inte redan är läst
+    // messaged marked when read 
     if (!interest.read) {
-      await fetch(`http://localhost:5000/api/interests/${interest._id}/read`, {
+      await fetch(`${API_URL}/api/interests/${interest._id}/read`, {
         method: 'PUT'
       });
       setInterests(interests.map(i => 

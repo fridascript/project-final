@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -111,7 +112,7 @@ export const Dashboard = () => {
 const handleDelete = async (productId) => {
   if (!window.confirm('Are you sure you want to delete this item?')) return;
   
-  await fetch(`http://localhost:5000/api/products/${productId}`, {
+  await fetch(`${API_URL}/api/products/${productId}`, {
     method: 'DELETE'
   });
   
@@ -130,13 +131,13 @@ const handleDelete = async (productId) => {
     }
 
    const fetchMyProducts = async () => {
-  const response = await fetch(`http://localhost:5000/api/products?userId=${userId}`);
+  const response = await fetch(`${API_URL}/api/products?userId=${userId}`);
   const data = await response.json();
   if (data.success) setProducts(data.response);
 };
 
 const fetchUser = async () => {
-  const response = await fetch(`http://localhost:5000/api/auth/me`, {
+  const response = await fetch(`${API_URL}/api/auth/me`, {
     headers: { Authorization: localStorage.getItem('accessToken') }
   });
   const data = await response.json();

@@ -13,8 +13,15 @@ const ProductSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Ceramics', 'Textile', 'Wood', 'Jewelry', 'Art', 'Other']
+    enum: ['Ceramics', 'Textile', 'Jewelry', 'Art', 'Other']
   },
+
+  color: {
+  type: String,
+  enum: ['','White', 'Black', 'Brown', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Purple', 'Orange', 'Grey', 'Multicolor'],
+  default: ''
+},
+
   forSale: {
     type: Boolean,
     default: false

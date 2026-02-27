@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -126,13 +127,13 @@ export const Gallery = () => {
 
   useEffect(() => {
     const fetchArtist = async () => {
-      const response = await fetch(`http://localhost:5000/api/auth/user/${userId}`);
+      const response = await fetch(`${API_URL}/api/auth/user/${userId}`);
       const data = await response.json();
       if (data.success) setArtist(data.response);
     };
 
     const fetchProducts = async () => {
-      const response = await fetch(`http://localhost:5000/api/products?userId=${userId}`);
+      const response = await fetch(`${API_URL}/api/products?userId=${userId}`);
       const data = await response.json();
       if (data.success) setProducts(data.response);
     };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -41,7 +42,7 @@ const ImageSection = styled.div`
 
 const ProductImage = styled.img`
  width: 100%;
- max-height: 400px;
+ max-height: 600px;
  border-radius: 8px;
  object-fit: cover;
  object-position: center;
@@ -165,7 +166,7 @@ export const ProductDetail = () => {
 
  const handleSubmit = async () => {
   try {
-    await fetch('http://localhost:5000/api/interests', {
+    await fetch(`${API_URL}/api/interests`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productId: id, ...formData })

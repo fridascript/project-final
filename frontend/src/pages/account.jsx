@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../tools/config';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navbar } from '../components/Navbar';
@@ -85,7 +86,7 @@ export const Account = () => {
     }
 
     const fetchUser = async () => {
-      const response = await fetch('http://localhost:5000/api/auth/me', {
+      const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: { Authorization: localStorage.getItem('accessToken') }
       });
       const data = await response.json();
@@ -110,7 +111,7 @@ export const Account = () => {
     if (profileImage) data.append('profileImage', profileImage);
     if (headerImage) data.append('headerImage', headerImage);
 
-    const response = await fetch('http://localhost:5000/api/auth/me', {
+    const response = await fetch(`${API_URL}/api/auth/me`, {
       method: 'PUT',
       headers: { Authorization: localStorage.getItem('accessToken') },
       body: data
