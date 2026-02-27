@@ -17,9 +17,9 @@ app.use(cors());
 app.use(express.json());
 
 //import routes
-import authRoutes from "./routes/auth.js"
-import productRoutes from './routes/products.js';
-import interestRoutes from "./routes/interest.js";
+import authRoutes from "./routes/Auth.js"
+import productRoutes from './routes/Products.js';
+import interestRoutes from "./routes/Interest.js";
 
 
 //use routes
