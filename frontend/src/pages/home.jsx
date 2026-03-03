@@ -70,6 +70,7 @@ export const Home = () => {
   return (
     <Container>
       <Navbar/>
+      <main>
       <FilterBar 
         products={products}
         onArtistChange={setSelectedArtist}
@@ -83,6 +84,7 @@ export const Home = () => {
           ))}
         </Grid>
       </GridContainer>
+      </main>
     </Container>
   );
 };

@@ -56,8 +56,8 @@ export const FilterBar = ({ products = [], onArtistChange, onCategoryChange, onC
   return (
     <FilterContainer>
       <div>
-        <FilterLabel>ARTIST</FilterLabel>
-        <Select onChange={(e) => onArtistChange(e.target.value)}>
+        <FilterLabel as="label" htmlFor="artist-filter">ARTIST</FilterLabel>
+        <Select id="artist-filter" onChange={(e) => onArtistChange(e.target.value)}>
           <option value="">All</option>
           {artists.map(artist => (
             <option key={artist._id} value={artist._id}>{artist.name}</option>
@@ -66,8 +66,8 @@ export const FilterBar = ({ products = [], onArtistChange, onCategoryChange, onC
       </div>
       
       <div>
-        <FilterLabel>TYPE</FilterLabel>
-        <Select onChange={(e) => onCategoryChange(e.target.value)}>
+        <FilterLabel as="label" htmlFor="category-filter">TYPE</FilterLabel>
+        <Select id="category-filter" onChange={(e) => onCategoryChange(e.target.value)}>
           <option value="">All</option>
           {categories.map(category => (
             <option key={category} value={category}>{category}</option>
@@ -76,8 +76,8 @@ export const FilterBar = ({ products = [], onArtistChange, onCategoryChange, onC
       </div>
       
       <div>
-        <FilterLabel>COLOR</FilterLabel>
-        <Select onChange={(e) => onColorChange(e.target.value)}>
+        <FilterLabel as="label" htmlFor="color-filter">COLOR</FilterLabel>
+        <Select id="color-filter" onChange={(e) => onColorChange(e.target.value)}>
           <option value="">All</option>
           {colors.map(color => (
             <option key={color} value={color}>{color}</option>
