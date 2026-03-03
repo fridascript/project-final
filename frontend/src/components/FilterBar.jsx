@@ -5,7 +5,7 @@ const FilterContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 15px;
-  margin-top: 150px;
+  margin-top: 60px;
   margin-bottom: 0px;
   align-items: stretch;
   border-radius: 8px;
@@ -14,6 +14,7 @@ const FilterContainer = styled.div`
   @media (min-width: ${props => props.theme.breakpoints.tablet}) {
     flex-direction: row;
     align-items: center;
+    margin-top: 150px;
   }
 `;
 

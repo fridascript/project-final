@@ -221,7 +221,11 @@ export const Navbar = () => {
         <Subtitle>Browse through hand crafted items</Subtitle>
       </LogoSection>
        
-      <HamburgerButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      <HamburgerButton 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isMenuOpen}
+        >
         <span></span>
         <span></span>
         <span></span>
@@ -265,7 +269,7 @@ export const Navbar = () => {
     </Nav>
 
     <MobileMenu isOpen={isMenuOpen}>
-      <CloseButton onClick={() => setIsMenuOpen(false)}>X</CloseButton>
+      <CloseButton onClick={() => setIsMenuOpen(false)} aria-label="Close menu">X</CloseButton>
       {isLoggedIn ? (
         <>
           <NavButton onClick={() => { navigate('/messages'); setIsMenuOpen(false); }}>Messages</NavButton>

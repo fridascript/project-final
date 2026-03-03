@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useLocation } from 'react-router-dom';
 import { Navbar } from "../components/Navbar";
@@ -14,14 +14,14 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
- const GridContainer = styled.div`
- max-width: 1100px;
- margin: 0 auto;
+const GridContainer = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
 `;
 
- const Grid = styled.div`
+const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: (1fr);
   gap: 40px;
   margin-top: 50px;
   max-width: 1200px;
@@ -40,48 +40,48 @@ const Container = styled.div`
   }
 `;
 
-
 export const Home = () => {
-   const [products, setProducts] = useState([]);
-   const location = useLocation();
-   const searchTerm = new URLSearchParams(location.search).get('search') || '';
-   const [selectedArtist, setSelectedArtist] = useState('');
-   const [selectedCategory, setSelectedCategory] = useState('');
-   const [selectedColor, setSelectedColor] = useState('');
+  const [products, setProducts] = useState([]);
+  const location = useLocation();
+  const searchTerm = new URLSearchParams(location.search).get('search') || '';
+  const [selectedArtist, setSelectedArtist] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
 
-   useEffect(() => {
+  useEffect(() => {
     const getProducts = async () => {
       const data = await fetchProducts();
       setProducts(data);
     };
-    
     getProducts();
   }, []);
 
-  const filteredProducts = products.filter(product => {
-   const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesArtist = !selectedArtist || product.creator._id === selectedArtist;
-  const matchesCategory = !selectedCategory || product.category === selectedCategory;
-  const matchesColor = !selectedColor || product.color === selectedColor;
-  return matchesSearch && matchesArtist && matchesCategory && matchesColor;
-});
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        product.category.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesArtist = !selectedArtist || product.creator._id === selectedArtist;
+      const matchesCategory = !selectedCategory || product.category === selectedCategory;
+      const matchesColor = !selectedColor || product.color === selectedColor;
+      return matchesSearch && matchesArtist && matchesCategory && matchesColor;
+    });
+  }, [products, searchTerm, selectedArtist, selectedCategory, selectedColor]);
 
   return (
     <Container>
       <Navbar/>
       <FilterBar 
-      products={products}
-      onArtistChange={setSelectedArtist}
-      onCategoryChange={setSelectedCategory}
-      onColorChange={setSelectedColor}
+        products={products}
+        onArtistChange={setSelectedArtist}
+        onCategoryChange={setSelectedCategory}
+        onColorChange={setSelectedColor}
       />
       <GridContainer>
-      <Grid>
-      {filteredProducts.map((product) => (
-    <ProductCard key={product._id} product={product} />
-  ))}
-      </Grid>
+        <Grid>
+          {filteredProducts.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </Grid>
       </GridContainer>
     </Container>
   );

@@ -20,12 +20,10 @@ cursor: pointer;
   }
 `;
 
-const ImagePlaceholder = styled.div`
+const ProductImage = styled.img`
   width: 100%;
   height: 250px;
-  background-color: #c4c1c1;
-  background-position: center;
-  background-repeat: no-repeat;
+  object-fit: cover;
   border-radius: 4px;
   margin-bottom: 12px;
 `;
@@ -57,7 +55,7 @@ export const ProductCard = ({ product }) => {
   return (
   <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
   <Card>
-  <ImagePlaceholder style={{ backgroundImage: `url(${product.image})`, backgroundSize: 'cover' }} />
+  <ProductImage src={product.image} alt={product.title} />
   <Title>{product.title}</Title>
   <Artist>By {product.creator?.name || 'Artist'}</Artist>
   <Price>{product.price} kr</Price>
