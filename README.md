@@ -1,15 +1,33 @@
-# Final Project
+# MANOMANO 🏺
 
-As my final project I decided to combine my two current hyper fixations: building websites and crafts (in my case ceramics)
+As my final project I decided to combine my two current hyper fixations: building websites and crafts (in my case ceramics).
 
-This website helps hobby artists share their work and reach potential buyers by showcasing their hand crafted items in an online gallery with an interest-based system. Instead of public transactions, users can express interest and connect directly with the artist to complete purchases privately. The platform offers an alternative, more personal space for all hobby artists out their to show and sell their work.
+MANOMANO is a marketplace for hobby artists to showcase and sell their handmade items. Instead of public transactions, visitors can express interest and connect directly with the artist to complete purchases privately. The platform offers a more personal alternative space for hobby artists to show and sell their work. To post your items you register and log in, for visitors only there's no need to sign up. 
 
-## The problem
+## The Problem
 
-Describe how you approached to problem, and what tools and techniques you used to solve it. How did you plan? What technologies did you use? If you had more time, what would be next?
+I wanted to build something that felt personal and different from big e-commerce platforms like Etsy. The solution was an interest-based system where buyers reach out directly to artists, keeping the transaction human and private.
+
+**Planning & approach:**
+- Designed the UI in Figma before building
+- Built a REST API with Node/Express and MongoDB
+- Used Cloudinary for image uploads
+- Implemented authentication with bcrypt and access tokens
+- Managed global auth state with Zustand
+
+**Future adds**
+- Email notifications when a new interest is received
+- Ability to reply to messages directly in the app
+- To be able to save an object as a favorite
+
+## Tech Stack
+
+- **Frontend:** React, Styled Components, Zustand, React Router
+- **Backend:** Node.js, Express, MongoDB, Mongoose
+- **Other:** Cloudinary (image uploads), bcrypt (auth), Render (backend hosting), Netlify (frontend hosting)
 
 ## View it live
 
-Every project should be deployed somewhere. Be sure to include the link to the deployed project so that the viewer can click around and see what it's all about.
-
+- 🌐 Frontend: https://manoamano.netlify.app
+- 🔧 Backend: https://manomano-backend.onrender.com
 
