@@ -14,6 +14,8 @@ import { PostItem } from './pages/PostItems.jsx';
 import { EditItem } from './pages/EditItem';
 import { Account } from './pages/account.jsx';
 
+import { HomeGallery } from './pages/HomeGallery';
+
 
 
 export const App = () => {
@@ -24,7 +26,7 @@ export const App = () => {
       <GlobalStyles/>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<HomeGallery />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="product/:id" element={<ProductDetail /> } />
@@ -34,6 +36,7 @@ export const App = () => {
       <Route path="/post-item" element={<PostItem />} />
       <Route path="/edit-item/:id" element={<EditItem />} />
       <Route path="/account" element={<Account />} />
+      {/* <Route path="/gallery-test" element={<HomeGallery />} /> */}
       </Routes>
       </BrowserRouter>
       </ThemeProvider>
