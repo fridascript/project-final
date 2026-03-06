@@ -2,7 +2,7 @@ import {ThemeProvider } from "styled-components";
 import { theme } from "./assets/theme";
 import { GlobalStyles } from "./assets/GlobalStyles.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Home} from "./pages/home.jsx";
+// import {Home} from "./pages/home.jsx";
 import { Login } from "./pages/login.jsx";
 import { Register } from './pages/register.jsx';
 import { ProductDetail } from "./pages/ProductDetail.jsx";
@@ -36,7 +36,7 @@ export const App = () => {
       <Route path="/post-item" element={<PostItem />} />
       <Route path="/edit-item/:id" element={<EditItem />} />
       <Route path="/account" element={<Account />} />
-      {/* <Route path="/gallery-test" element={<HomeGallery />} /> */}
+    
       </Routes>
       </BrowserRouter>
       </ThemeProvider>
